@@ -1,0 +1,270 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<time.h>
+#include<windows.h>
+#include<string.h>
+void showmatrix(int [][4]);
+int shiftleft(int [][4]);
+int shiftright(int [][4]);
+int shiftup(int [][4]);
+int shiftdown(int [][4]);
+void gamerule(int [][4]);
+void swap(int *,int*);
+void creatematrix(int [][4]);
+int readEnteredKey();
+int winner(int a[][4]);
+
+
+
+int main(){
+      int move=50,i,j,a[4][4];
+      char name[5];
+      char key,check;
+      
+
+
+      printf("Player Name:");
+      scanf("%s",name);
+      system("cls");
+
+
+    while(1){
+        creatematrix(a);
+     gamerule(a);
+     
+    while(!winner(a)){
+        system("cls");
+        if(!move)
+        break;
+
+    printf("\n\n Welcome %s , Move remaining : %d \n\n",name,move);
+    showmatrix(a);
+
+     int key=readEnteredKey();
+    
+    switch(key){
+
+
+        case 69://ascii code of E
+
+        case 101://ascii code of e
+        printf("\n\n Thanks for playing");
+        printf("\n Hit Enter to exit a game");
+        key=getchar();
+        exit(0);
+
+        case 75:
+        if(shiftleft(a))
+        move--;
+        break;
+        
+        case 72:
+        if(shiftup(a))
+        move--;
+        break;
+        
+        case 77:
+        if(shiftright(a))
+        move--;
+        break;
+        
+        case 80:
+        if(shiftdown(a))
+        move--;
+        break;
+
+        default:
+        printf("\n\n  \aNot allowed");
+        break;
+        
+    } 
+    }    
+     if(!move)
+         printf("\n\a          YOU LOSE !          \a\a\n");
+    else
+    { printf("\n\a!!!!!!!!!!!!!Congratualization !!!!!!!!!!!!!\n\a");
+           printf("\a               You have Won      \a\a\a ");
+     }
+        printf("\nwant to play again ? \n");
+        printf("enter 'y' to play again:  ");
+        int key=readEnteredKey();
+        if(key!='y' && key!='Y')
+            break;
+
+        move=50;
+        }
+       
+    return 0;
+    }
+void showmatrix(int a[][4]){
+int i,j;
+int n=15;
+
+
+ printf("---------------------\n");
+ for(i=0;i<4;i++){
+        printf("| ");
+        for(j=0;j<4;j++){
+            if(a[i][j]!=0){
+           printf("%-2d | ",a[i][j]);
+        }
+        else 
+        printf("   |");
+        }
+        printf("\n");
+    }
+     printf("---------------------\n");
+}
+int shiftleft(int a[][4]){
+    int i,j;
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++)
+            if(a[i][j]==0)
+            break;
+
+        if(j<4)
+        break;
+        
+    }
+    if(j==3)
+    return 0;
+
+    swap(&a[i][j],&a[i][j+1]);
+    return 1;
+}
+int shiftright(int a[][4]){
+    int i,j;
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++)
+            if(a[i][j]==0)
+            break;
+
+        if(j<4)
+        break;
+        
+    }
+    if(j==0)
+    return 0;
+    swap(&a[i][j],&a[i][j-1]);
+    return 1;
+}
+int shiftup(int a[][4]){
+    int i,j;
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++)
+            if(a[i][j]==0)
+            break;
+
+        if(j<4)
+        break;
+        
+    }
+    if(i==3)
+    return 0;
+
+    swap(&a[i][j],&a[i+1][j]);
+    return 1;
+}
+int shiftdown(int a[][4]){
+    int i,j;
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++)
+            if(a[i][j]==0)
+            break;
+
+        if(j<4)
+         break;
+        
+    }
+    if(i==0)
+    return 0;
+    swap(&a[i][j],&a[i-1][j]);
+    return 1;
+}
+void swap(int *p,int *q){
+   *p=*p+*q;
+   *q=*p-*q;
+   *p=*p-*q;
+    printf("");
+} 
+void creatematrix(int a[][4]){
+     int n=15;
+    int num[n],i,j;
+    for(i=0;i<15;i++)      
+    num[i]=i+1;
+
+    srand(time(NULL));          
+
+    int lastIndex=n-1,index;
+
+    for(i=0;i<4;i++)
+    for(j=0;j<4;j++)
+  {
+    if(lastIndex>=0)
+    {  index=rand()%(lastIndex+1); 
+       a[i][j]=num[index];     
+       num[index]=num[lastIndex--];
+    }                              
+  }
+       a[i-1][j-1]=0;          
+
+}
+void gamerule(int a[][4]){
+
+    int i,j,k=1;
+   
+
+      printf("\nRule of this Games");
+    printf("\n1.You can move only 1 step at a time by arrow key");
+    printf("\nMove up : by up arrow key");
+    printf("\nMove down : by Down arrow key");
+    printf("\nMove left : by left arrow key");
+    printf("\nMove right : by right arrow key");
+    printf("\n\n2. You can move number at empty position only");
+    printf("\n\n3. For each valid move : your total number of move will decreased by 1");
+    printf("\n\n4. Wining situation : number in a 4*4 matrix should be in order from 1 to 15");
+    printf("\nWining Situation\n");
+    printf("---------------------\n");
+    for(i=0;i<4;i++){
+        printf("| ");
+        for(j=0;j<4;j++){
+             if(a[i][j]!=0)
+              printf("%-2d | ",4*i+j+1);
+             else
+              printf("   |");   
+        }
+        printf("\n");
+    }
+    printf("---------------------\n");
+     printf("\n5.You can exit the game at any time by pressing 'E' or 'e' so Try to win in minimun no of move\n\n");
+     printf("          Happy gaming , Good Luck\n");
+    printf("\nEnter any key to start.........\n");
+    int x=readEnteredKey();
+}
+int readEnteredKey(){
+    
+char c;
+c=getch();
+if(c==-32)
+c=getch();
+return c;
+
+}
+
+int winner(int a[][4]){
+    int i,j,k=1;
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++,k++){
+               if(a[i][j]!=k &&k!=16)
+               break;
+
+            if(j<4)
+            break;
+        }
+        if(j<4)
+        return 0;
+        return 1;
+
+    }
+}
